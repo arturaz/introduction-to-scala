@@ -1,11 +1,11 @@
 package introduction
 
 object Main015 extends App {
-  val seq = Seq.tabulate(20)(identity)
+  val seq = Seq.tabulate(3)(identity)
 
   println(seq.map(_ * 3))
   println(seq.map(i => Seq(i, i * 2, i * 3)))
-  println(seq.map(i => Seq(i, i * 2, i * 3).flatten))
+  println(seq.map(i => Seq(i, i * 2, i * 3)).flatten)
   println(seq.flatMap(i => Seq(i, i * 2, i * 3)))
 
   println(seq.reduce(_ + _))

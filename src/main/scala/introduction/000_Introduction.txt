@@ -222,7 +222,13 @@ Enough chit chat.
 Let's learn us some Scala for greater good!
 
 
+P.S.: I don't really like this kind of presentations -
+you can always check the docs out :)
 
+What makes them useful is the ability to get info out of
+me directly right here, right now.
+
+So don't be shy - ASK.
 
 
 
