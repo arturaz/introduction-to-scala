@@ -1,0 +1,239 @@
+
+
+
+
+
+
+******************** INTRODUCTION ********************
+
+So... Why Scala?
+
+Let me tell you a little story.
+How I started.
+There was PHP, Perl, Python, C++, C, Java, *Ruby*.
+And then there was Scala.
+
+Why?
+
+I had a need. I was in love with Rubys simplicity and
+ease of use, but it was just TOO SLOW.
+
+So I searched. And found Scala.
+
+
+
+
+
+
+
+
+
+
+******************** WHY SCALA? #1 ********************
+
+Reasons to learn Scala:
+
+- You want to accomplish things faster.
+- You want to write conciser code that has more meaning per line.
+- You want a language that helps you reduce number of bugs you make.
+- You want a flexible language: OOP or functional depending on your needs.
+- You want to get a job at LinkedIn, Foursquare, Twitter, Office Depot,
+  EDF Trading, Siemens, Xebia, Xerox, CSC, Sony, UBS, Novell, BankSimple,
+  The Guardian...
+- You want to sound like a smart-ass. ^-^ (Although Haskell is more appropriate)
+
+Reasons NOT to learn Scala:
+
+- You hate learning.
+- You get paid per line of code written. Including lines with only { in it.
+- Your boss hates efficiency.
+- You still code with Java 1.5 and learning Scala will make you miserable/
+  wanting to switch jobs.
+
+
+
+
+
+
+
+
+******************** WHY SCALA? #2 ********************
+
+INVALID reasons NOT to learn Scala:
+
+- You will not be able to use Scala as a language in your day job.
+
+
+
+
+
+
+
+  Consider this code in C#:
+
+    private Either<string, A> getConcrete<A>(
+      IList<string> parts, Parser<A> parser
+    ) { ... }
+
+    private Either<string, A> get<A>(string key, Parser<A> parser) {
+      var parts = split(key);
+
+      var fullPlatform = Platform.fullName;
+      var platform = Platform.name;
+
+      // Try getting platform + subplatform, then platform, then generic key.
+      var current = getConcrete(injectPlatform(parts, fullPlatform), parser);
+      current = current.flatMapLeft(_ =>
+        // Do not access again if fullPlatform == platform.
+        fullPlatform == platform
+          ? current : getConcrete(injectPlatform(parts, platform), parser)
+      );
+      current = current.flatMapLeft(__ => getConcrete(parts, parser));
+      return current;
+    }
+
+
+
+  Imperative version:
+
+    private string getConcrete<A>(
+      IList<string> parts, Parser<A> parser, out A output
+    ) { ... }
+
+    private string get<A>(string key, Parser<A> parser, out A output) {
+      var parts = split(key);
+
+      var fullPlatform = Platform.fullName;
+      var platform = Platform.name;
+
+      // Try getting platform + subplatform, then platform, then generic key.
+      A out current;
+      var error = getConcrete(
+        injectPlatform(parts, fullPlatform), parser, current
+      );
+      if (error == null) {
+        output = current;
+        return null;
+      }
+      // Do not access again if fullPlatform == platform.
+      if (fullPlatform != platform) {
+        error = getConcrete(injectPlatform(parts, platform), parser, current);
+        if (error == null) {
+          output = current;
+          return null;
+        }
+      }
+      error = getConcrete(parts, parser, current);
+      if (error == null) {
+        output = current;
+        return null;
+      }
+      return error;
+    }
+
+
+
+
+- You think it is too hard.
+- You are afraid to feel like a noob again:
+
+  - You can use it as a better Java if you want.
+
+  - Feeling like a noob means there's something out there that can improve your
+    life. I still feel like noob when using `scalaz`.
+
+  - You don't have to fully understand how things work to use them. E.g.:
+
+      protected def qsParam(name: String)(implicit request: Request[_]) =
+        request.getQueryString(name).fold2(
+          s"Missing query parameter $name".failureNel,
+          _.successNel
+        )
+
+      protected def qsExtractTTParams(implicit request: Request[_]) = {
+        val timeP = ttQueryParamName("time")
+        val startP = ttQueryParamName("start")
+        val modeP = ttQueryParamName("mode")
+
+        (
+          qsIntParam(timeP) |@| qsDateTimeParam(startP) |@| qsParam(modeP)
+        ) { (time, start, mode) => TTParams(
+          start, time, mode,
+          request.queryString - startP - timeP - modeP
+        ) }
+      }
+
+    Then I go to definition of |@|:
+
+      /**
+       * DSL for constructing Applicative expressions.
+       *
+       * `(f1 |@| f2 |@| ... |@| fn)((v1, v2, ... vn) => ...)` is an alternative to `Apply[F].mapN(f1, f2, ..., fn)((v1, v2, ... vn) => ...)`
+       *
+       * `(f1 |@| f2 |@| ... |@| fn).tupled` is an alternative to `Apply[F].mapN(f1, f2, ..., fn)(TupleN.apply _)`
+       *
+       * Warning: each call to `|@|` leads to an allocation of wrapper object. For performance sensitive code, consider using
+       *          [[scalaz.Apply]]`#mapN` directly.
+       */
+      final def |@|[B](fb: F[B]) = new ApplicativeBuilder[F, A, B] {
+        val a: F[A] = self
+        val b: F[B] = fb
+      }
+
+    o_O
+
+    But the thing is: I don't really need to understand what EXACTLY a Functor
+    or Applicative is to use them.
+
+
+
+
+
+
+
+******************** HOW CAN I USE IT? ********************
+
+
+
+
+
+
+- Full-on Scala or partially (tests, separate classes).
+- SBT/Gradle/Maven project. SBT recommended.
+- IntelliJ IDEA / Scala IDE (I'm using IDEA).
+
+
+
+
+
+
+
+
+
+
+
+******************** LETS GET TO IT! ********************
+
+
+
+Enough chit chat.
+
+
+Let's learn us some Scala for greater good!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
